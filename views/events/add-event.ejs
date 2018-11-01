@@ -1,0 +1,51 @@
+<% include ../partials/header.ejs %>
+    <div class="container">
+        <% if (message != '') { %>
+            <p class="text-center text-danger"><%= message %></p>
+        <% } %>
+        <form class="add-player-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" name="event_name" id="event-name" placeholder="Event Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <input id="datepicker" name="event_date" required/>
+                    <script>
+                        $('#datepicker').datepicker({
+                            uiLibrary: 'bootstrap4'
+                        });
+                    </script>
+                </div>
+                <div class="form-group col-md-4">
+                     <input id="timepicker" name="event_time" required/>
+                    <script>
+                        $('#timepicker').timepicker({
+                            uiLibrary: 'bootstrap4'
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="event_address" id="event-address" placeholder="Address" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <select id="event-level" name="event_level" class="form-control" required>
+                        <option selected disabled>How lit will this event be?</option>
+                        <option>Chill Sesh</option>
+                        <option>Semi Lit</option>
+                        <option>Very Lit</option>
+                        <option>Absolute Rager</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="event-img"><b>Pad Image</b></label><br>
+                    <input type="file" name="image" id="event-img" class="" >
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Add Event</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
