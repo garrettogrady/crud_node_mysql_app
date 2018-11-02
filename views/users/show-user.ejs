@@ -1,0 +1,27 @@
+<% include ../partials/header.ejs %>
+    <div class="table-wrapper">
+        <% if (user) {%>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <span><%= user.first_name %></span>
+                </div>
+                <div class="form-group col-md-6">
+                   <span><%= user.last_name %></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <span><%= user.email %></span>
+                </div>
+                <div class="form-group col-md-6">
+                   <span></span>
+                </div>
+            </div>
+
+        <% } else { %>
+            <p class="text-center">No user found. Go <a href="/add_event" >here</a> to add event.</p>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>
