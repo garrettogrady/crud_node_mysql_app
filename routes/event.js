@@ -18,6 +18,7 @@ module.exports = {
         let level = req.body.event_level;
         let date = req.body.event_date;
         let time = req.body.event_time;
+        let host_id = global.userSignedIn;
         let uploadedFile = req.files.image;
         let image_name = uploadedFile.name;
         let fileExtension = uploadedFile.mimetype.split('/')[1];
@@ -33,8 +34,8 @@ module.exports = {
                     return res.status(500).send(err);
                 }
                 // send the player's details to the database
-                let query = "INSERT INTO `events` (event_name, event_address, event_date, event_time, event_level, image) VALUES ('" +
-                    name + "', '" + address + "', '" + date + "', '" + time + "', '" + level + "', '" + image_name + "')";
+                let query = "INSERT INTO `events` (event_name, event_address, event_date, event_time, event_level, image, host_id) VALUES ('" +
+                    name + "', '" + address + "', '" + date + "', '" + time + "', '" + level + "', '" + image_name + "', '" + host_id + "')";
                 db.query(query, (err, result) => {
                     if (err) {
                         return res.status(500).send(err);
@@ -85,7 +86,7 @@ module.exports = {
         let eventId = req.params.id;
         let getImageQuery = 'SELECT image from `events` WHERE event_id = "' + eventId + '"';
         let deleteEventQuery = 'DELETE FROM events WHERE event_id = "' + eventId + '"';
-
+        console.log(eventId);
         db.query(getImageQuery, (err, result) => {
             if (err) {
                 return res.status(500).send(err);

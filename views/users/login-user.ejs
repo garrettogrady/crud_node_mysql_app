@@ -3,15 +3,7 @@
         <% if (message != '') { %>
             <p class="text-center text-danger"><%= message %></p>
         <% } %>
-        <form class="add-player-form" action="" method="post" enctype="multipart/form-data">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="first_name" id="first-name" placeholder="First Name" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control" name="last_name" id="last-name" placeholder="Last Name" required>
-                </div>
-            </div>
+        <form class="add-player-form" action="" method="post" enctype="multipart/form-data">                
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <input type="text" class="form-control" name="email" id="email" placeholder="email" required>
@@ -20,7 +12,7 @@
                     <input type="password" class="form-control" name="password" id="password" placeholder="password" required>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary float-right">Add User</button>
+            <button type="submit" class="btn btn-primary float-right">Sign In</button>
         </form>
     </div>
 </div>

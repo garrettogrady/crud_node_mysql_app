@@ -4,29 +4,32 @@
             <table class="table table-hovered">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Image</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Address</th>
                         <th scope="col">Time</th>
                         <th scope="col">Date</th>
                         <th scope="col">Level</th>
+                        <th scope="col">Host_ID</th>
                         <th scope="col">Action</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <% event.forEach((event, index) => { %>
                         <tr>
-                            <th scope="row"><%= event.event_id %></th>
+                            <th scope="row"><%= event.event_name %></th>
                             <td><img src="/assets/img/<%= event.image %>" class="rounded-circle player-img" alt=""></td>
-                            <td><%= event.event_name %></td>
                             <td><%= event.event_address %></td>
                             <td><%= event.event_time %></td>
                             <td><%= event.event_date %></td>
                             <td><%= event.event_level %></td>
+                            <td><a href="/show_user/<%= event.host_id %>"><%= event.email %></a></td>
                             <td>
-                                <a href="/edit/<%= event.event_id %>" target="_blank" rel="noopener" class="btn btn-sm btn-success">Edit</a>
-                                <a href="/delete/<%= event.event_id %>" class="btn btn-sm btn-danger">Delete</a>
+                                 <% if (event.id == currentUser) {%>
+                                <a href="/edit_event/<%= event.event_id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="/delete_event/<%= event.event_id %>" class="btn btn-sm btn-danger">Delete</a>
+                                <% } %>
                             </td>
                         </tr>
                     <% }) %>

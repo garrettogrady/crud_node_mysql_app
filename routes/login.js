@@ -16,12 +16,21 @@ module.exports = {
         let password = req.body.password;
           
 
-                // send the player's details to the database
         let query = "INSERT INTO `users` (first_name, last_name, email, password) VALUES ('" + first_name + "', '" + last_name + "', '" + email + "', '" + password + "')";
         db.query(query, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
+        });
+
+        let getIdQuery = "SELECT id FROM `users` WHERE email = '" + email + "' ";
+        db.query(getIdQuery, (err2, result2) => {
+            if (err2) {
+                return res.status(500).send(err2);
+            }
+
+            global.userSignedIn = result2[0].id;
+            global.currentUser = true;
             res.redirect('/');
         });
 
@@ -58,6 +67,7 @@ module.exports = {
     },
     deleteUser: (req, res) => {
         let id = req.params.id;
+        console.log(id);
         let deleteUserQuery = 'DELETE FROM users WHERE id = "' + id + '"';
 
     
@@ -67,5 +77,49 @@ module.exports = {
             }
             res.redirect('/');
         });
-    }
+    },
+    addloginPage: (req, res) => {
+        res.render('users/login-user.ejs', {
+            title: "Welcome to WhatsLit | Login"
+            ,message: ''
+        });
+    },
+    loginUser: (req, res) => {
+        let email = req.body.email;
+        let password = req.body.password;
+        let loginUserQuery = 'SELECT * FROM `users` WHERE email = "' + email + '" AND password =  "' + password + '"';
+        console.log(loginUserQuery);
+        db.query(loginUserQuery, (err, result) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            console.log(result);
+            res.redirect('/');
+            global.userSignedIn = result[0].id;
+            global.currentUser = true;
+            console.log(global.userSignedIn);
+           
+        });
+    },
+    logoutUser: (req, res) => {
+        global.userSignedIn = null
+        global.currentUser = false;
+        res.redirect('/');
+    },
+    showUserPage: (req, res) => {
+        let id = req.params.id;
+        let query = 'SELECT * FROM `users` WHERE id = "' + id + '"';
+        //execute query
+        console.log(query);
+        db.query(query, (err, result) => {
+            if (err) {
+                res.redirect('/');
+            }
+            console.log(result);
+            res.render('users/show-user.ejs', {
+                title: "Welcome to whatslit | View events"
+                ,user: result[0]
+            });
+        });
+    },
 };
