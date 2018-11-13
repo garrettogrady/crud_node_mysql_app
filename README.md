@@ -13,3 +13,12 @@ run `npm install`
 then `nodemon`
 
 then say some prayers it runs
+
+
+Todo
+
+- fix log in
+- Add edit profile
+- Add reviews
+- Change homepage so that events show upcoming vs past
+- add advanced functions
