@@ -1,9 +1,11 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
 const app = express();
+
 
 const {getHomePage} = require('./routes/index');
 const {addEventPage, addEvent, deleteEvent, editEvent, editEventPage} = require('./routes/event');
@@ -26,6 +28,7 @@ db.connect((err) => {
 });
 global.db = db;
 
+var sess;
 // configure middleware
 app.set('port', process.env.port || port); // set express to use this port
 app.set('views', __dirname + '/views'); // set express to look in this folder to render our view
@@ -35,6 +38,7 @@ app.use(bodyParser.json()); // parse form data client
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 app.use(fileUpload()); // configure fileupload
 
+app.use(session({secret: 'Ouch, me knackers!'}));
 // routes for the app
 
 app.get('/', getHomePage);
