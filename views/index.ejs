@@ -1,44 +1,136 @@
 <% include partials/header.ejs %>
     <div class="table-wrapper">
-        <% if (event.length > 0) {%>
-            <table class="table table-hovered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Level</th>
-                        <th scope="col">Host_ID</th>
-                        <th scope="col">Action</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <% event.forEach((event, index) => { %>
+        <% if (event[0].length > 0) {%>
+            <div class="table-div" style="width: 45%; float: left; padding: 5%;">
+                <caption>Upcoming Events</caption>
+                <table class="table table-hovered" >
+                
+                    <thead class="thead-dark">
                         <tr>
-                            <th scope="row"><%= event.event_name %></th>
-                            <td><img src="/assets/img/<%= event.image %>" class="rounded-circle player-img" alt=""></td>
-                            <td><%= event.event_address %></td>
-                            <td><%= event.event_time %></td>
-                            <td><%= event.event_date %></td>
-                            <td><%= event.event_level %></td>
-                            <td><a href="/show_user/<%= event.host_id %>"><%= event.email %></a></td>
-                            <td>
-                                 <% if (event.id == currentUser) {%>
-                                <a href="/edit_event/<%= event.event_id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
-                                <a href="/delete_event/<%= event.event_id %>" class="btn btn-sm btn-danger">Delete</a>
-                                <% } %>
-                            </td>
+                            <th scope="col">Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Host_ID</th>
+                            <th scope="col">Action</th>
+
                         </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <% event[0].forEach((event, index) => { %>
+                            <tr>
+                                <th scope="row"><%= event.event_name %></th>
+                                <td><img src="/assets/img/<%= event.image %>" class="rounded-circle player-img" alt=""></td>
+                                <td><%= event.event_address %></td>
+                                <td><%= event.event_time %></td>
+                                <td><%= event.event_date %></td>
+                                <td><%= event.event_level %></td>
+                                <td><a href="/show_user/<%= event.host_id %>"><%= event.email %></a></td>
+                                <td>
+                                    <% if (event.id == currentUser) {%>
+                                        <a href="/edit_event/<%= event.event_id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                        <a href="/delete_event/<%= event.event_id %>" class="btn btn-sm btn-danger">Delete</a>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         <% } else { %>
-            <p class="text-center">No user found. Go <a href="/add_event" >here</a> to add event.</p>
+            <div style="width:45%; float: left; padding: 5%;">
+                <p class="text-center">No upcoming events found.</p>
+            </div>
         <% } %>
+        <% if (event[1].length > 0) {%>
+            <div class="table-div" style="width: 45%; float: left; padding: 5%;">
+                <caption>Past Events</caption>
+                <table class="table table-hovered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Host_ID</th>
+                            <th scope="col">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% event[1].forEach((event, index) => { %>
+                            <tr>
+                                <th scope="row"><%= event.event_name %></th>
+                                <td><img src="/assets/img/<%= event.image %>" class="rounded-circle player-img" alt=""></td>
+                                <td><%= event.event_address %></td>
+                                <td><%= event.event_time %></td>
+                                <td><%= event.event_date %></td>
+                                <td><%= event.event_level %></td>
+                                <td><a href="/show_user/<%= event.host_id %>"><%= event.email %></a></td>
+                                <td>
+                                     <% if (event.id == currentUser) {%>
+                                    <a href="/edit_event/<%= event.event_id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                    <a href="/delete_event/<%= event.event_id %>" class="btn btn-sm btn-danger">Delete</a>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div style="width:45%; float: left; padding: 5%;">
+                <p class="text-center">No past events found.</p>
+            </div>
+        <% } %>
+        
+        <% if (event[2].length > 0) {%>
+            <div class="table-div" style="width: 100%; float: left; padding: 5%;">
+                <caption>Your Events</caption>
+                <table class="table table-hovered" >
+                
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Host_ID</th>
+                            <th scope="col">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% event[2].forEach((event, index) => { %>
+                            <tr>
+                                <th scope="row"><%= event.event_name %></th>
+                                <td><img src="/assets/img/<%= event.image %>" class="rounded-circle player-img" alt=""></td>
+                                <td><%= event.event_address %></td>
+                                <td><%= event.event_time %></td>
+                                <td><%= event.event_date %></td>
+                                <td><%= event.event_level %></td>
+                                <td><a href="/show_user/<%= event.host_id %>"><%= event.email %></a></td>
+                                <td>
+                                    <% if (event.id == currentUser) {%>
+                                        <a href="/edit_event/<%= event.event_id %>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                        <a href="/delete_event/<%= event.event_id %>" class="btn btn-sm btn-danger">Delete</a>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div style="width:100%; float: left; padding: 5%;">
+                <p class="text-center">You have not hosted any events.</p>
+            </div>
+        <% } %>
+        
     </div>
-</div>
-</body>
-</html>
