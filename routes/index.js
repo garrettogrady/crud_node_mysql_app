@@ -64,19 +64,6 @@ module.exports = {
                 });
             }
         });
-        /*
-		db.query(past_events_query, (err, result) => {
-            if (err) {
-                console.log(err);
-            }
-            res.render('index.ejs', {
-                title: "Welcome to whatslit | View events"
-                ,event: result
-                ,currentUser: global.userSignedIn
-            });
-        });
-        */
-        
         
     }
 };
