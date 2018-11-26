@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
 const app = express();
-
 const {getHomePage} = require('./routes/index');
 const {addEventPage, addEvent, deleteEvent, editEvent, editEventPage} = require('./routes/event');
 const {addUserPage, addUser, deleteUser, editUser, editUserPage, addloginPage, loginUser, logoutUser, showUserPage} = require('./routes/login');

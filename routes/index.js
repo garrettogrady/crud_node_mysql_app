@@ -1,30 +1,68 @@
 module.exports = {
-	getHomePage: (req, res) => {
-
-        if (!global.currentUser) {
+	getHomePage: (req, res) => {        
+        if(!global.userSignedIn){
             res.redirect('/login_user');
-        } else {
-            let userId = global.userSignedIn;
-
-    		let query1 = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.host_id = '" + userId + "' ORDER BY event_id ASC";
-
-    		//execute query
-    		db.query(query1, (err1, result1) => {
-               let query2 = "SELECT * FROM `events` e Join `invited` i ON e.event_id = i.event_id WHERE i.guest_id = '" + userId + "' ORDER BY e.event_id ASC";
-                //execute query
-                db.query(query2, (err2, result2) => {
-                    if(err2){
-
-                       console.log(err2);
-                    }
-                    res.render('index.ejs', {
-                        title: "Welcome to whatslit | View events"
-                        ,hostingEvent: result1
-                        ,invitedEvent: result2
-                        ,currentUser: global.userSignedIn
-                    });
-                });
-            });
         }
-	},
+        
+        var async = require('async');
+        
+        let today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+        if(dd<10) dd='0'+dd;
+        if(mm<10) mm='0'+mm;
+        
+        today = mm+'/'+dd+'/'+yyyy;
+        
+        current_user_id = global.userSignedIn;
+
+		//execute queries
+        async.parallel([
+            
+            function(callback){
+                let future_events_query = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id Join `invited` i ON i.event_id = e.event_id WHERE e.event_date >= '" + today + "' AND i.guest_id = " + current_user_id;
+                db.query(future_events_query, function(err, futureEvents){
+                    if(err){
+                        return callback(err);
+                    }
+                    return callback(null, futureEvents);
+                });
+            },
+            function(callback){
+                let past_events_query = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id Join `invited` i ON i.event_id = e.event_id WHERE e.event_date < '" + today + "' AND i.guest_id = " + current_user_id;
+                
+                db.query(past_events_query, function(err, pastEvents){
+                    if(err){
+                        return callback(err);
+                    }
+                    return callback(null, pastEvents);
+                });
+            },
+            function(callback){
+                let user_events_query = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.host_id = " + current_user_id;
+                
+                db.query(user_events_query, function(err, userEvents){
+                    if(err){
+                        return callback(err);
+                    }
+                    return callback(null, userEvents);
+                });
+            }
+            
+        ], function(error, callbackResults){
+            if(error){
+                console.log(error);
+            } else {
+                console.log(callbackResults[0]); //upcoming events
+                console.log(callbackResults[1]); //past events
+                res.render('index.ejs', {
+                    title: "Welcome to whatslit | View events",
+                    event: callbackResults,
+                    currentUser: global.userSignedIn
+                });
+            }
+        });
+        
+    }
 };
