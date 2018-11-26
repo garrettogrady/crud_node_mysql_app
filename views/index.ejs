@@ -1,11 +1,10 @@
 <% include partials/header.ejs %>
-    <h1 class="index-title"> Your Hosted Events </h1>
     <div class="table-wrapper">
         <div class="container">
+            <h1 class="index-title"> Your Upcoming Events </h1>
             <div class="row">
                 <% if (event[0].length > 0) {%>
                     <div class="table-div m-2 col">
-                        <caption>Upcoming Events</caption>
                         <table class="table table-hovered" >
 
                             <thead class="thead-dark">
@@ -40,9 +39,11 @@
                         <p class="text-center">No upcoming events found.</p>
                     </div>
                 <% } %>
+            </div>
+            <h1 class="index-title"> Your Past Events </h1>
+            <div class="row">
                 <% if (event[1].length > 0) {%>
                     <div class="table-div m-2 col">
-                        <caption>Past Events</caption>
                         <table class="table table-hovered">
                             <thead class="thead-dark">
                                 <tr>
@@ -81,10 +82,10 @@
                     </div>
                 <% } %>
             </div>
+            <h1 class="index-title"> Your Hosted Events </h1>
             <div class="row">
                 <% if (event[2].length > 0) {%>
                     <div class="table-div col m-2"> 
-                        <caption>Your Events</caption>
                         <table class="table table-hovered" >
 
                             <thead class="thead-dark">
