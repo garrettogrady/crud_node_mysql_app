@@ -1,6 +1,5 @@
 module.exports = {
-	getHomePage: (req, res) => {
-        
+	getHomePage: (req, res) => {        
         if(!global.userSignedIn){
             res.redirect('/login_user');
         }

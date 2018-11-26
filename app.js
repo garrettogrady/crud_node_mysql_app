@@ -8,6 +8,7 @@ const {getHomePage} = require('./routes/index');
 const {addEventPage, addEvent, deleteEvent, editEvent, editEventPage} = require('./routes/event');
 const {addUserPage, addUser, deleteUser, editUser, editUserPage, addloginPage, loginUser, logoutUser, showUserPage} = require('./routes/login');
 
+
 const port = 5000;
 
 //create db connection
@@ -55,6 +56,9 @@ app.get('/show_user/:id', showUserPage);
 app.post('/add_user', addUser);
 app.post('/edit_user/:id', editUser);
 app.post('/login_user', loginUser);
+
+// global.userSignedIn = 2;
+// global.currentUser = true;
 
 
 

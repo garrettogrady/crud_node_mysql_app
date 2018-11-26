@@ -1,31 +1,15 @@
 const fs = require('fs');
 
 module.exports = {
-    addEventPage: (req, res) => {
-        res.render('events/add-event.ejs', {
+    addInvitePage: (req, res) => {
+        res.render('invited/add-invite.ejs', {
             title: "Welcome to WhatsLit | Add a new event"
             ,message: ''
         });
     },
-    addEvent: (req, res) => {
-        if (!req.files) {
-            return res.status(400).send("No files were uploaded.");
-        }
+    addInvite: (req, res) => {
 
-        let message = '';
-        let name = req.body.event_name;
-        let address = req.body.event_address;
-        let level = req.body.event_level;
-        let date = req.body.event_date;
-        let time = req.body.event_time;
-        let host_id = global.userSignedIn;
-        let invite_emails = req.body.event_invite;
-        let uploadedFile = req.files.image;
-        let image_name = uploadedFile.name;
-        let fileExtension = uploadedFile.mimetype.split('/')[1];
-        image_name = name + '.' + fileExtension;
-
-
+        let invitedEmail = req.body.invite_email;
           
         // check the filetype before uploading it
         if (uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg' || uploadedFile.mimetype === 'image/gif') {
@@ -41,47 +25,8 @@ module.exports = {
                     if (err) {
                         return res.status(500).send(err);
                     }
-                    
+                    res.redirect('/');
                 });
-                let query2 = "SELECT LAST_INSERT_ID();";
-                db.query(query2, (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send(err);
-                    }
-                    var resultArray = Object.values(JSON.parse(JSON.stringify(result[0])))
-                    console.log(resultArray);
-                    var event_id = resultArray[0];
-                    console.log(event_id);
-                    var invite_email_ary = invite_emails.split(" ");
-                    var arrayLength = invite_email_ary.length;
-                    for (var i = 0; i < arrayLength; i++) {
-                        let invite_email = invite_email_ary[i];
-                        let query3 = "SELECT * FROM `users` WHERE email = '" + invite_email + "' ";
-                        db.query(query3, (err, result2) => {
-                            console.log("hello");
-                        
-                            if (err) {
-                                console.log(err);
-                                return;
-                            }
-
-                            let query4 = "INSERT INTO `invited` (event_id, guest_id) VALUES ('" +
-                                event_id + "', '" + result2[0].id + "')";
-                            db.query(query4, (err, result3) => {
-                                if (err) {
-                                    console.log(err);
-                                    return res.status(500).send(err);
-                                }
-                            });
-                        });
-
-                } 
-
-                });
-
-                res.redirect('/');  
-        
             });
         } else {
             message = "Invalid File format. Only 'gif', 'jpeg' and 'png' images are allowed.";
