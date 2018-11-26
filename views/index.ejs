@@ -69,7 +69,7 @@
                                         <td><%= event.event_level %></td>
                                         <td><a href="/show_user/<%= event.host_id %>"><%= event.email %></a></td>
                                         <td>
-                                            <a href="/" rel="noopener" class="btn btn-sm btn-primary">Review</a>
+                                            <a href="/add_review/<%= event.event_id %>" rel="noopener" class="btn btn-sm btn-primary">Review</a>
                                         </td>
                                     </tr>
                                 <% }) %>
