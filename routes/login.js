@@ -8,6 +8,7 @@ module.exports = {
         });
     },
     addUser: (req, res) => {
+        sess = req.session;
 
         let message = '';
         let first_name = req.body.first_name;
@@ -29,8 +30,9 @@ module.exports = {
                 return res.status(500).send(err2);
             }
 
-            global.userSignedIn = result2[0].id;
-            global.currentUser = true;
+            sess.signedInUser = result2[0].id;
+            /*global.userSignedIn = result2[0].id;
+            global.currentUser = true;*/
             res.redirect('/');
         });
 
@@ -85,25 +87,36 @@ module.exports = {
         });
     },
     loginUser: (req, res) => {
+        sess = req.session;
+
         let email = req.body.email;
         let password = req.body.password;
         let loginUserQuery = 'SELECT * FROM `users` WHERE email = "' + email + '" AND password =  "' + password + '"';
         console.log(loginUserQuery);
         db.query(loginUserQuery, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            console.log(result);
+        if (err) {
+            return res.status(500).send(err);
+        }
+        console.log(result);
+        console.log(result[0])
+        if(typeof result[0] == 'undefined'){
+            res.redirect('/login_user')
+        } else {
+            sess.signedInUser = result[0].id;
             res.redirect('/');
-            global.userSignedIn = result[0].id;
-            global.currentUser = true;
-            console.log(global.userSignedIn);
+            //global.userSignedIn = result[0].id;
+            //global.currentUser = true;
+            //console.log(global.userSignedIn);
+        }
+       
            
         });
     },
     logoutUser: (req, res) => {
-        global.userSignedIn = null
-        global.currentUser = false;
+        req.session.destroy();
+        sess.destroy();
+        //global.userSignedIn = null
+        //global.currentUser = false;
         res.redirect('/');
     },
     showUserPage: (req, res) => {

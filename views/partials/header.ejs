@@ -39,7 +39,7 @@
 <div class="page-wrapper">
     <nav class="navbar navbar-light bg-light">
         <span class="navbar-brand mb-0 h1" ><a href="/">Whats Lit</a></span>
-        <% if (global.currentUser) {%>
+        <% if (typeof currentUser !== 'undefined') {%>
         <a class="float-right" href="/add_event" title="Add a New Event">Add an Event</a>
         <a class="float-right" href="/edit_user/<%= global.userSignedIn %>" title="Edit user">Edit Profile</a>
         <a class="float-right" href="/logout_user" title="Add a New Event">Sign Out</a>

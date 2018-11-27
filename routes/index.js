@@ -17,6 +17,8 @@ module.exports = {
         
         current_user_id = global.userSignedIn;
 
+
+    sess = req.session;
 		//execute queries
         async.parallel([
             
@@ -52,15 +54,19 @@ module.exports = {
             
         ], function(error, callbackResults){
             if(error){
-                console.log(error);
+                res.redirect('/');
             } else {
                 console.log(callbackResults[0]); //upcoming events
                 console.log(callbackResults[1]); //past events
-                res.render('index.ejs', {
-                    title: "Welcome to whatslit | View events",
-                    event: callbackResults,
-                    currentUser: global.userSignedIn
-                });
+               if(sess.signedInUser){
+                  res.render('index.ejs', {
+                      title: "Welcome to whatslit | View events",
+                      event: callbackResults,
+                      currentUser: sess.signedInUser
+                  });
+               } else {
+                  res.redirect('/login_user')
+               }
             }
         });
         
