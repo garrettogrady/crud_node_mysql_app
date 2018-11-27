@@ -9,6 +9,7 @@ const app = express();
 const {getHomePage} = require('./routes/index');
 const {addEventPage, addEvent, deleteEvent, editEvent, editEventPage} = require('./routes/event');
 const {addUserPage, addUser, deleteUser, editUser, editUserPage, addloginPage, loginUser, logoutUser, showUserPage} = require('./routes/login');
+const {addReviewPage, addReview} = require('./routes/review');
 
 
 const port = 5000;
@@ -42,13 +43,15 @@ app.use(session({secret: 'Ouch, me knackers!'}));
 // routes for the app
 
 app.get('/', getHomePage);
+
+//events
 app.get('/add_event', addEventPage);
 app.get('/edit_event/:id', editEventPage);
 app.get('/delete_event/:id', deleteEvent);
-
 app.post('/add_event', addEvent);
 app.post('/edit_event/:id', editEvent);
 
+//users
 app.get('/add_user', addUserPage);
 app.get('/edit_user/:id', editUserPage);
 app.get('/delete_user/:id', deleteUser);
@@ -60,6 +63,10 @@ app.get('/show_user/:id', showUserPage);
 app.post('/add_user', addUser);
 app.post('/edit_user/:id', editUser);
 app.post('/login_user', loginUser);
+
+//reviews
+app.get('/add_review/:id', addReviewPage);
+app.post('/add_review/:id', addReview);
 
 // global.userSignedIn = 2;
 // global.currentUser = true;
