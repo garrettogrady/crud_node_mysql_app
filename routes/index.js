@@ -1,9 +1,5 @@
 module.exports = {
-	getHomePage: (req, res) => {        
-        if(!global.userSignedIn){
-            res.redirect('/login_user');
-        }
-        
+	getHomePage: (req, res) => {             
         var async = require('async');
         
         let today = new Date();
@@ -14,11 +10,13 @@ module.exports = {
         if(mm<10) mm='0'+mm;
         
         today = mm+'/'+dd+'/'+yyyy;
-        
-        current_user_id = global.userSignedIn;
 
+        sess = req.session;
+        current_user_id = sess.signedInUser;
 
-    sess = req.session;
+        if(!sess.signedInUser){
+            res.redirect('/login_user');
+        }
 		//execute queries
         async.parallel([
             
@@ -54,7 +52,8 @@ module.exports = {
             
         ], function(error, callbackResults){
             if(error){
-                res.redirect('/');
+                console.log("error in index page");
+                console.log(error);
             } else {
                 console.log(callbackResults[0]); //upcoming events
                 console.log(callbackResults[1]); //past events
@@ -64,8 +63,6 @@ module.exports = {
                       event: callbackResults,
                       currentUser: sess.signedInUser
                   });
-               } else {
-                  res.redirect('/login_user')
                }
             }
         });

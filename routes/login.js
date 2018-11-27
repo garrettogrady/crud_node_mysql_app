@@ -31,6 +31,8 @@ module.exports = {
             }
 
             sess.signedInUser = result2[0].id;
+            //just for safe keepings
+            global.userSignedIn = sess.signedInUser;
             /*global.userSignedIn = result2[0].id;
             global.currentUser = true;*/
             res.redirect('/');
@@ -104,9 +106,7 @@ module.exports = {
         } else {
             sess.signedInUser = result[0].id;
             res.redirect('/');
-            //global.userSignedIn = result[0].id;
-            //global.currentUser = true;
-            //console.log(global.userSignedIn);
+            global.userSignedIn = sess.signedInUser;
         }
        
            
@@ -115,8 +115,7 @@ module.exports = {
     logoutUser: (req, res) => {
         req.session.destroy();
         sess.destroy();
-        //global.userSignedIn = null
-        //global.currentUser = false;
+        global.userSignedIn = null
         res.redirect('/');
     },
     showUserPage: (req, res) => {
