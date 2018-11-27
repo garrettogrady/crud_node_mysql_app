@@ -28,6 +28,12 @@
     .add-player-form {
         margin-top: 50px;
     }
+
+    .index-title {
+        text-align: center;
+        padding-top: 10px;
+        color: cornflowerblue;
+    }
 </style>
 <body>
 <div class="page-wrapper">
@@ -35,6 +41,7 @@
         <span class="navbar-brand mb-0 h1" ><a href="/">Whats Lit</a></span>
         <% if (typeof currentUser !== 'undefined') {%>
         <a class="float-right" href="/add_event" title="Add a New Event">Add an Event</a>
+        <a class="float-right" href="/edit_user/<%= global.userSignedIn %>" title="Edit user">Edit Profile</a>
         <a class="float-right" href="/logout_user" title="Add a New Event">Sign Out</a>
         <% }else {%>
         <a class="float-right" href="/login_user" title="Login">Login</a>
