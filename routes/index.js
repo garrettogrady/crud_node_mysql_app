@@ -40,13 +40,23 @@ module.exports = {
                 });
             },
             function(callback){
-                let user_events_query = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.host_id = " + current_user_id;
+                let user_events_query = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date >= '" + today + "' AND e.host_id = " + current_user_id;
                 
-                db.query(user_events_query, function(err, userEvents){
+                db.query(user_events_query, function(err, futureUserEvents){
                     if(err){
                         return callback(err);
                     }
-                    return callback(null, userEvents);
+                    return callback(null, futureUserEvents);
+                });
+            },
+            function(callback){
+                let user_events_query = "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id;
+                
+                db.query(user_events_query, function(err, pastUserEvents){
+                    if(err){
+                        return callback(err);
+                    }
+                    return callback(null, pastUserEvents);
                 });
             }
             
