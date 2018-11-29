@@ -19,8 +19,9 @@ const db = mysql.createConnection ({
 	host: 'localhost',
     user: 'root',
     password: '',
-    database: 'whatslit'
-},{multipleStatements: true})
+    database: 'whatslit',
+	  multipleStatements: true
+});
 
 //conect to database
 db.connect((err) => {
