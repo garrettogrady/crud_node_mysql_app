@@ -20,7 +20,7 @@ const db = mysql.createConnection ({
     user: 'root',
     password: '',
     database: 'whatslit',
-	multipleStatements: true
+	  multipleStatements: true
 });
 
 //conect to database
