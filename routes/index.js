@@ -13,7 +13,7 @@ module.exports = {
 
         sess = req.session;
         current_user_id = sess.signedInUser;
-
+        console.log("THE CURRENT USER: " + current_user_id);
         if(!sess.signedInUser){
             res.redirect('/login_user');
         }

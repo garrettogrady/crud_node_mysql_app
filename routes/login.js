@@ -1,4 +1,5 @@
 const fs = require('fs');
+const crypt = require('bcrypt');
 
 module.exports = {
     addUserPage: (req, res) => {
@@ -16,26 +17,27 @@ module.exports = {
         let email = req.body.email;
         let password = req.body.password;
           
+        crypt.hash(password, 10, function(err, hash){
+            let query = "INSERT INTO `users` (first_name, last_name, email, password) VALUES ('" + first_name + "', '" + last_name + "', '" + email + "', '" + hash + "')";
+            db.query(query, (err, result) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+            });
 
-        let query = "INSERT INTO `users` (first_name, last_name, email, password) VALUES ('" + first_name + "', '" + last_name + "', '" + email + "', '" + password + "')";
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-        });
+            let getIdQuery = "SELECT id FROM `users` WHERE email = '" + email + "' ";
+            db.query(getIdQuery, (err2, result2) => {
+                if (err2) {
+                    return res.status(500).send(err2);
+                }
 
-        let getIdQuery = "SELECT id FROM `users` WHERE email = '" + email + "' ";
-        db.query(getIdQuery, (err2, result2) => {
-            if (err2) {
-                return res.status(500).send(err2);
-            }
-
-            sess.signedInUser = result2[0].id;
-            //just for safe keepings
-            global.userSignedIn = sess.signedInUser;
-            /*global.userSignedIn = result2[0].id;
-            global.currentUser = true;*/
-            res.redirect('/');
+                sess.signedInUser = result2[0].id;
+                //just for safe keepings
+                global.userSignedIn = sess.signedInUser;
+                /*global.userSignedIn = result2[0].id;
+                global.currentUser = true;*/
+                res.redirect('/');
+            });
         });
 
     },
@@ -61,13 +63,17 @@ module.exports = {
         let email = req.body.email;
         let password = req.body.password;
 
-        let query = "UPDATE `users` SET `first_name` = '" + first_name + "', `last_name` = '" + last_name + "', `email` = '" + email + "', `password` = '" + password + "' WHERE `users`.`id` = '" + id + "'";
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
+        crypt.hash(password, 10, function(err, hash){
+            let query = "UPDATE `users` SET `first_name` = '" + first_name + "', `last_name` = '" + last_name + "', `email` = '" + email + "', `password` = '" + hash + "' WHERE `users`.`id` = '" + id + "'";
+            db.query(query, (err, result) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                res.redirect('/');
+            });
         });
+
+        
     },
     deleteUser: (req, res) => {
         let id = req.params.id;
@@ -93,23 +99,33 @@ module.exports = {
 
         let email = req.body.email;
         let password = req.body.password;
-        let loginUserQuery = 'SELECT * FROM `users` WHERE email = "' + email + '" AND password =  "' + password + '"';
+
+        crypt.hash(password, 10, function(err, hash){
+            console.log(hash);
+        });
+
+        //let loginUserQuery = 'SELECT * FROM `users` WHERE email = "' + email + '" AND password =  "' + password + '"';
+        let loginUserQuery = 'SELECT * FROM `users` WHERE email = "' + email + '"';
         console.log(loginUserQuery);
         db.query(loginUserQuery, (err, result) => {
-        if (err) {
-            return res.status(500).send(err);
-        }
-        console.log(result);
-        console.log(result[0])
-        if(typeof result[0] == 'undefined'){
-            res.redirect('/login_user')
-        } else {
-            sess.signedInUser = result[0].id;
-            res.redirect('/');
-            global.userSignedIn = sess.signedInUser;
-        }
-       
-           
+            if (err) {
+                return res.status(500).send(err);
+            }
+            console.log(result);
+            console.log(result[0])
+            if(typeof result[0] == 'undefined'){
+                res.redirect('/login_user');
+            } else {
+                crypt.compare(password, result[0].password, function(err, hashres){
+                    if(hashres){
+                        sess.signedInUser = result[0].id;
+                        res.redirect('/');
+                        global.userSignedIn = sess.signedInUser;
+                    } else {
+                        res.redirect('/login_user');
+                    }
+                });
+            }   
         });
     },
     logoutUser: (req, res) => {
