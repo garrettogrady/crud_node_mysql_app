@@ -54,11 +54,11 @@ module.exports = {
                 CREATE TEMPORARY TABLE t1 AS SELECT event, count(*), AVG(rating) FROM `reviews` GROUP BY event;
                 CREATE TEMPORARY TABLE t2 AS SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.host_id = 1;
                 SELECT * FROM t1 right OUTER JOIN t2 ON t1.event = t2.event_id; **/
-                let past_events_query = "DROP TABLE IF EXISTS t1;" +
-                                        "CREATE TEMPORARY TABLE t1 AS SELECT `event`, count(*) AS num_reviews, AVG(rating) AS avg_review FROM `reviews` GROUP BY `event`;" +
-                                        "DROP TABLE IF EXISTS t2;" +
-                                        "CREATE TEMPORARY TABLE t2 AS SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id +
-                                        "; SELECT * FROM t1 right OUTER JOIN t2 ON t1.event = t2.event_id;";
+                let past_events_query = "DROP TABLE IF EXISTS ReviewTable;" +
+                                        "CREATE TEMPORARY TABLE ReviewTable AS SELECT `event`, count(*) AS num_reviews, AVG(rating) AS avg_review FROM `reviews` GROUP BY `event`;" +
+                                        "DROP TABLE IF EXISTS EventsTable;" +
+                                        "CREATE TEMPORARY TABLE EventsTable AS SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id +
+                                        "; SELECT * FROM ReviewTable right OUTER JOIN EventsTable ON ReviewTable.event = EventsTable.event_id;";
                 // let q1 = 
                 // let q2 =  "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id;
                 // let q3 = "SELECT * FROM  t1 right OUTER JOIN t2 ON t1.event = t2.event_id";
