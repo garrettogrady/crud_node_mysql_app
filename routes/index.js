@@ -54,15 +54,21 @@ module.exports = {
                 CREATE TEMPORARY TABLE t1 AS SELECT event, count(*), AVG(rating) FROM `reviews` GROUP BY event;
                 CREATE TEMPORARY TABLE t2 AS SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.host_id = 1;
                 SELECT * FROM t1 right OUTER JOIN t2 ON t1.event = t2.event_id; **/
+                let past_events_query = "DROP TABLE IF EXISTS t1;" +
+                                        "CREATE TEMPORARY TABLE t1 AS SELECT `event`, count(*) AS num_reviews, AVG(rating) AS avg_review FROM `reviews` GROUP BY `event`;" +
+                                        "DROP TABLE IF EXISTS t2;" +
+                                        "CREATE TEMPORARY TABLE t2 AS SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id +
+                                        "; SELECT * FROM t1 right OUTER JOIN t2 ON t1.event = t2.event_id;";
+                // let q1 = 
+                // let q2 =  "SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id;
+                // let q3 = "SELECT * FROM  t1 right OUTER JOIN t2 ON t1.event = t2.event_id";
 
-                //let q1 = "DROP TABLE IF EXISTS CREATE TEMPORARY TABLE t1 AS SELECT `event`, count(*), AVG(rating) FROM `reviews` GROUP BY `event`;";
-                let q3 = "SELECT * FROM (SELECT event, count(*) as num_reviews, AVG(rating) as avg_review FROM `reviews` GROUP BY event) t1 right OUTER JOIN (SELECT * FROM `events` e Join `users` u ON e.host_id = u.id WHERE e.event_date < '" + today + "' AND e.host_id = " + current_user_id+") t2 ON t1.event = t2.event_id";
-
-                db.query(q3, function(err, pastUserEvents){
+                db.query(past_events_query, function(err, pastUserEvents){
                     if(err){
                         return callback(err);
                     }
-                    return callback(null, pastUserEvents);
+                    console.log(pastUserEvents[4]);
+                    return callback(null, pastUserEvents[4]);
                 });
             },
             function(callback){
