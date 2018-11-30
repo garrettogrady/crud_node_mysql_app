@@ -24,8 +24,6 @@ module.exports = {
         let image_name = uploadedFile.name;
         let fileExtension = uploadedFile.mimetype.split('/')[1];
         image_name = name + '.' + fileExtension;
-
-
           
         // check the filetype before uploading it
         if (uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg' || uploadedFile.mimetype === 'image/gif') {
@@ -59,9 +57,13 @@ module.exports = {
                         let invite_email = invite_email_ary[i];
                         let query3 = "SELECT * FROM `users` WHERE email = '" + invite_email + "' ";
                         db.query(query3, (err, result2) => {
-                            console.log("hello");
                         
                             if (err) {
+                                console.log(err);
+                                return;
+                            } 
+
+                            if (result2[0] == null) {
                                 console.log(err);
                                 return;
                             }
