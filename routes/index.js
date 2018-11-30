@@ -66,11 +66,15 @@ module.exports = {
                 });
             },
             function(callback){
-                let suggested_events_query = "CREATE TEMPORARY TABLE UserInvites AS SELECT events.event_id FROM events NATURAL JOIN invited WHERE guest_id = " + current_user_id + " AND event_date >= '" + today + "'; " +
-                "CREATE TEMPORARY TABLE UserEvents AS SELECT events.event_id FROM users JOIN events  ON users.id = events.host_id WHERE users.id = " + current_user_id + "; " +
-                "CREATE TEMPORARY TABLE InvitedGuests AS SELECT invited.guest_id FROM UserEvents NATURAL JOIN invited; " +
-                "CREATE TEMPORARY TABLE GuestEvents AS SELECT DISTINCT Invited.event_id FROM InvitedGuests NATURAL JOIN invited; " +
-                "SELECT * FROM UserInvites NATURAL JOIN events WHERE EXISTS (SELECT event_id FROM GuestEvents);";
+                let suggested_events_query = "DROP TABLE IF EXISTS UserInvites;" +
+                    "CREATE TEMPORARY TABLE UserInvites AS SELECT events.event_id FROM events NATURAL JOIN invited WHERE guest_id = " + current_user_id + " AND event_date >= '" + today + "'; " +
+                    "DROP TABLE IF EXISTS UserEvents;" +
+                    "CREATE TEMPORARY TABLE UserEvents AS SELECT events.event_id FROM users JOIN events  ON users.id = events.host_id WHERE users.id = " + current_user_id + "; " +
+                    "DROP TABLE IF EXISTS InvitedGuests;" +
+                    "CREATE TEMPORARY TABLE InvitedGuests AS SELECT invited.guest_id FROM UserEvents NATURAL JOIN invited; " +
+                    "DROP TABLE IF EXISTS GuestEvents;" +
+                    "CREATE TEMPORARY TABLE GuestEvents AS SELECT DISTINCT Invited.event_id FROM InvitedGuests NATURAL JOIN invited; " +
+                    "SELECT * FROM UserInvites NATURAL JOIN events WHERE EXISTS (SELECT event_id FROM GuestEvents);";
 
                 db.query(suggested_events_query, function(err, suggestedEvents){
                     if(err){
