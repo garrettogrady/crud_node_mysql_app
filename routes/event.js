@@ -123,6 +123,46 @@ module.exports = {
             }
             res.redirect('/');
         });
+        
+        /*
+        let invite_emails = req.body.event_invite;
+        let query2 = "SELECT `event_id` FROM `events` WHERE `event_id` = '" + eventId + "'";
+        db.query(query2, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);
+            }
+            var resultArray = Object.values(JSON.parse(JSON.stringify(result[0])))
+            var event_id = resultArray[0];
+            var invite_email_ary = invite_emails.split(" ");
+            var arrayLength = invite_email_ary.length;
+            for (var i = 0; i < arrayLength; i++) {
+                let invite_email = invite_email_ary[i];
+                let query3 = "SELECT * FROM `users` WHERE email = '" + invite_email + "' ";
+                db.query(query3, (err, result2) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    } 
+
+                    if (result2[0] == null) {
+                        console.log(err);
+                        return;
+                    }
+
+                    let query4 = "INSERT INTO `invited` (event_id, guest_id) VALUES ('" +
+                        event_id + "', '" + result2[0].id + "')";
+                    db.query(query4, (err, result3) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send(err);
+                        }
+                    });
+                });
+            }
+        }*/
+
+
     },
     deleteEvent: (req, res) => {
         let eventId = req.params.id;
