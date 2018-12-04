@@ -22,6 +22,6 @@
     "req-flash": "0.0.3"
   },
   "devDependencies": {
-    "bcrypt": "^3.0.0"
+    "bcrypt": "2.0.1"
   }
 }
