@@ -163,7 +163,7 @@
                     </div>
                 <% } %>
             </div>
-            <h1 class="index-title"> Suggested Events </h1>
+            <h1 class="index-title"> Events your friends are going to</h1>
             <div class="row">
                 <% if (event[4].length > 0) {%>
                     <div class="table-div col m-2">
@@ -173,10 +173,11 @@
                             <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Image</th>
-                                <th scope="col">Address</th>
+                                <th scope="col">Time</th>
+				<th scope="col">Address</th>
                                 <th scope="col">Date</th>
-                                <th scope="col"># Reviews</th>
-                                <th scope="col">Avg Reviews</th>
+                                
+                               
                             </tr>
                             </thead>
                             <tbody>
@@ -187,8 +188,8 @@
                                     <td><%= event.event_address %></td>
                                     <td><%= event.event_time %></td>
                                     <td><%= event.event_date %></td>
-                                    <td><%= event.num_reviews %></td>
-                                    <td><%= event.avg_review %></td>
+                                    
+                                    
                                 </tr>
                             <% }) %>
                             </tbody>
